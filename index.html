@@ -13,14 +13,14 @@
   --gris-osc:#9aa0a6;
 }
 body{
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:Arial, Helvetica, sans-serif;
   margin:0;
   background:#f6f8fa;
 }
 header{
   background:#fff;
-  text-align:center;
   padding:20px;
+  text-align:center;
   box-shadow:0 2px 6px rgba(0,0,0,.08);
 }
 .avatar{
@@ -44,25 +44,20 @@ aside{
   border-radius:12px;
   padding:20px;
 }
-aside h3{margin-top:0}
 .step{opacity:.6;margin-bottom:10px}
 .step.active{opacity:1;font-weight:bold}
-
 .contacto{
   margin-top:40px;
   padding-top:20px;
   border-top:1px solid rgba(255,255,255,.4);
 }
-
 main{
   flex:1;
   background:#fff;
   border-radius:12px;
   padding:25px;
 }
-
 .hidden{display:none}
-
 label{display:block;margin-top:15px;font-weight:bold}
 input,select{
   width:100%;
@@ -71,13 +66,11 @@ input,select{
   border-radius:6px;
   border:1px solid #ccc;
 }
-
 .buttons{
   display:flex;
   gap:10px;
   margin-top:25px;
 }
-
 button{
   padding:10px 16px;
   border:none;
@@ -118,7 +111,6 @@ button:disabled{background:#999}
 .day.selected{
   outline:3px solid var(--azul);
 }
-
 .hours{
   margin-top:20px;
   display:flex;
@@ -208,16 +200,16 @@ button:disabled{background:#999}
   <h3>Tu información</h3>
 
   <label>Nombre *</label>
-  <input id="nombre">
+  <input>
 
   <label>Apellido *</label>
-  <input id="apellido">
+  <input>
 
   <label>Email *</label>
-  <input type="email" id="email">
+  <input type="email">
 
   <label>Teléfono *</label>
-  <input id="telefono">
+  <input>
 
   <div class="buttons">
     <button type="button" class="secondary" onclick="backToStep2()">⬅ Volver</button>
@@ -241,6 +233,9 @@ const step3 = document.getElementById('step3');
 const step1Label = document.getElementById('step1Label');
 const step2Label = document.getElementById('step2Label');
 const step3Label = document.getElementById('step3Label');
+
+let diaSeleccionado = null;
+let horarioSeleccionado = null;
 
 /* Servicio */
 servicio.addEventListener('change',()=>{
@@ -273,12 +268,15 @@ function renderCalendar(){
   monthYear.innerText=date.toLocaleString('es-AR',{month:'long',year:'numeric'});
   const y=date.getFullYear(),m=date.getMonth();
   const days=new Date(y,m+1,0).getDate();
+
   for(let d=1;d<=days;d++){
     const div=document.createElement('div');
     div.className='day '+(availableDays.includes(d)?'available':'disabled');
     div.innerText=d;
+
     if(availableDays.includes(d)){
       div.onclick=()=>{
+        diaSeleccionado=d;
         document.querySelectorAll('.day').forEach(x=>x.classList.remove('selected'));
         div.classList.add('selected');
         renderHours();
@@ -287,14 +285,18 @@ function renderCalendar(){
     calendar.appendChild(div);
   }
 }
+
 function renderHours(){
   hoursEl.innerHTML='';
+  horarioSeleccionado=null;
   toStep3.disabled=true;
+
   hours.forEach(h=>{
     const div=document.createElement('div');
     div.className='hour';
     div.innerText=h;
     div.onclick=()=>{
+      horarioSeleccionado=h;
       document.querySelectorAll('.hour').forEach(x=>x.classList.remove('selected'));
       div.classList.add('selected');
       toStep3.disabled=false;
@@ -307,6 +309,10 @@ function prevMonth(){date.setMonth(date.getMonth()-1);renderCalendar();}
 function nextMonth(){date.setMonth(date.getMonth()+1);renderCalendar();}
 
 toStep3.onclick=()=>{
+  if(!diaSeleccionado || !horarioSeleccionado){
+    alert('Seleccioná un día y horario');
+    return;
+  }
   step2.classList.add('hidden');
   step3.classList.remove('hidden');
   step2Label.classList.remove('active');
