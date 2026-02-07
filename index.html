@@ -1,253 +1,338 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agenda Pediatría</title>
-  <style>
-    :root{
-      --celeste:#8ecad0;
-      --azul:#1e6bd6;
-      --gris:#e6e6e6;
-      --gris-osc:#9aa0a6;
-    }
-    body{font-family:Arial, Helvetica, sans-serif;margin:0;background:#f7f9fb;}
-    header{background:#fff;padding:20px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-    .avatar{
-      width:140px;height:140px;border-radius:50%;
-      border:6px solid var(--azul);
-      object-fit:cover;
-    }
-    .container{max-width:1100px;margin:30px auto;display:flex;gap:20px;padding:0 15px}
-    aside{width:260px;background:var(--celeste);color:#fff;border-radius:10px;padding:20px}
-    aside h3{margin-top:0}
-    aside .step{margin-bottom:15px;opacity:.6}
-    aside .step.active{opacity:1;font-weight:bold}
-    main{flex:1;background:#fff;border-radius:10px;padding:25px}
-    .hidden{display:none}
-    label{display:block;margin-top:15px;font-weight:bold}
-    select,input{width:100%;padding:10px;margin-top:5px;border-radius:6px;border:1px solid #ccc}
-    button{margin-top:25px;background:var(--azul);color:#fff;border:none;padding:12px 18px;border-radius:8px;cursor:pointer}
-    button:disabled{background:#999}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda Pediatría</title>
 
-    /* Calendario */
-    .calendar{margin-top:20px}
-    .calendar-header{display:flex;justify-content:space-between;align-items:center}
-    .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:10px}
-    .day{padding:10px;border-radius:6px;text-align:center;font-weight:bold}
-    .day.disabled{background:var(--gris);color:var(--gris-osc)}
-    .day.available{background:var(--celeste);color:var(--azul);cursor:pointer}
-    .day.selected{outline:3px solid var(--azul)}
-    .hours{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
-    .hour{padding:8px 12px;border-radius:6px;border:1px solid var(--azul);color:var(--azul);cursor:pointer}
-    .hour.selected{background:var(--azul);color:#fff}
-  </style>
+<style>
+:root{
+  --celeste:#8ecad0;
+  --azul:#1e6bd6;
+  --gris:#e6e6e6;
+  --gris-osc:#9aa0a6;
+}
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  margin:0;
+  background:#f6f8fa;
+}
+header{
+  background:#fff;
+  text-align:center;
+  padding:20px;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+.avatar{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  border:6px solid var(--azul);
+  object-fit:cover;
+}
+.container{
+  max-width:1100px;
+  margin:30px auto;
+  display:flex;
+  gap:20px;
+  padding:0 15px;
+}
+aside{
+  width:260px;
+  background:var(--celeste);
+  color:#fff;
+  border-radius:12px;
+  padding:20px;
+}
+aside h3{margin-top:0}
+.step{opacity:.6;margin-bottom:10px}
+.step.active{opacity:1;font-weight:bold}
+
+.contacto{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.4);
+}
+
+main{
+  flex:1;
+  background:#fff;
+  border-radius:12px;
+  padding:25px;
+}
+
+.hidden{display:none}
+
+label{display:block;margin-top:15px;font-weight:bold}
+input,select{
+  width:100%;
+  padding:10px;
+  margin-top:5px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+.buttons{
+  display:flex;
+  gap:10px;
+  margin-top:25px;
+}
+
+button{
+  padding:10px 16px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+.primary{background:var(--azul);color:#fff}
+.secondary{background:#ccc;color:#000}
+button:disabled{background:#999}
+
+/* Calendario */
+.calendar-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:15px 0;
+}
+.calendar-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:8px;
+}
+.day{
+  padding:10px;
+  text-align:center;
+  border-radius:6px;
+  font-weight:bold;
+}
+.day.disabled{
+  background:var(--gris);
+  color:var(--gris-osc);
+}
+.day.available{
+  background:var(--celeste);
+  color:var(--azul);
+  cursor:pointer;
+}
+.day.selected{
+  outline:3px solid var(--azul);
+}
+
+.hours{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.hour{
+  padding:8px 12px;
+  border:1px solid var(--azul);
+  color:var(--azul);
+  border-radius:6px;
+  cursor:pointer;
+}
+.hour.selected{
+  background:var(--azul);
+  color:#fff;
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <img src="./pediatra.jpeg" alt="Pediatra" class="avatar" />
+  <img src="./pediatra.jpeg" class="avatar" alt="Pediatra">
   <h2>Dra. Celeste Trotti</h2>
   <p>Especialidad: Pediatría</p>
 </header>
 
 <div class="container">
-  <aside>
-    <h3>Reserva de Turno</h3>
-    <div class="step active" id="step1Label">1. Elegí tu servicio</div>
-    <div class="step" id="step2Label">2. Fecha y hora</div>
-    <div class="step" id="step3Label">3. Tu información</div>
 
-    <div style="margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.4)">
-      <p style="margin:0;font-weight:bold">Ponete en contacto</p>
-      <p style="margin:5px 0">📞 +54 2352 47-1150</p>
-    </div>
-  </aside>
+<aside>
+  <h3>Reserva de Turno</h3>
+  <div class="step active" id="step1Label">1. Elegí tu servicio</div>
+  <div class="step" id="step2Label">2. Fecha y hora</div>
+  <div class="step" id="step3Label">3. Tu información</div>
 
-  <main>
-    <!-- Paso 1 -->
-    <section id="step1">
-      <h3>Elegí tu servicio</h3>
-      <label>Servicio *</label>
-      <select id="servicio" required>
-        <option value="">Seleccioná el servicio</option>
-        <option value="CMM">Pediatría CMM</option>
-        <option value="LINCH">Pediatría Linch</option>
-      </select>
+  <div class="contacto">
+    <strong>Ponete en contacto</strong>
+    <p>📞 +54 2352 47-1150</p>
+  </div>
+</aside>
 
-      <label>Lugar de atención *</label>
-      <select id="lugar" required disabled>
-        <option value="">Seleccioná la ubicación</option>
-      </select>
+<main>
 
-      <button id="toStep2" disabled>Continuar</button>
-    </section>
+<!-- STEP 1 -->
+<section id="step1">
+  <h3>Elegí tu servicio</h3>
 
-    <!-- Paso 2 -->
-    <section id="step2" class="hidden">
-      <h3>Fecha y Hora</h3>
-      <div class="calendar">
-        <div class="calendar-header">
-          <button onclick="prevMonth()">◀</button>
-          <strong id="monthYear"></strong>
-          <button onclick="nextMonth()">▶</button>
-        </div>
-        <div class="calendar-grid" id="calendar"></div>
-      </div>
-      <div class="hours" id="hours"></div>
-      <div style="display:flex;gap:10px;align-items:center">
-        <button onclick="backToStep1()" style="background:#ccc;color:#000">⬅ Volver</button>
-        <button id="toStep3" disabled>Continuar</button>
-      </div>
-    </section>
+  <label>Servicio *</label>
+  <select id="servicio">
+    <option value="">Seleccioná el servicio</option>
+    <option value="CMM">Pediatría CMM</option>
+    <option value="LINCH">Pediatría Linch</option>
+  </select>
 
-    <!-- Paso 3 -->
-    <section id="step3" class="hidden">
-      <button onclick="backToStep2()" style="background:#ccc;color:#000">⬅ Volver</button>
-      <h3>Tu Información</h3>
-      <label>Nombre *</label>
-      <input type="text" id="nombre" required />
+  <label>Lugar de atención *</label>
+  <select id="lugar" disabled>
+    <option value="">Seleccioná la ubicación</option>
+  </select>
 
-      <label>Apellido *</label>
-      <input type="text" id="apellido" required />
+  <div class="buttons">
+    <button class="primary" id="toStep2" disabled>Continuar</button>
+  </div>
+</section>
 
-      <label>Email *</label>
-      <input type="email" id="email" required />
+<!-- STEP 2 -->
+<section id="step2" class="hidden">
+  <h3>Fecha y Hora</h3>
 
-      <label>Teléfono *</label>
-      <input type="tel" id="telefono" required />
+  <div class="calendar-header">
+    <button type="button" onclick="prevMonth()">◀</button>
+    <strong id="monthYear"></strong>
+    <button type="button" onclick="nextMonth()">▶</button>
+  </div>
 
-      <div style="display:flex;gap:10px;align-items:center">
-        <button onclick="backToStep2()" style="background:#ccc;color:#000">⬅ Volver</button>
-        <button onclick="confirmar()">Confirmar turno</_toggle>
-      </div>
-    </section>
-  </main>
+  <div class="calendar-grid" id="calendar"></div>
+  <div class="hours" id="hours"></div>
+
+  <div class="buttons">
+    <button type="button" class="secondary" onclick="backToStep1()">⬅ Volver</button>
+    <button type="button" class="primary" id="toStep3" disabled>Continuar</button>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3" class="hidden">
+  <h3>Tu información</h3>
+
+  <label>Nombre *</label>
+  <input id="nombre">
+
+  <label>Apellido *</label>
+  <input id="apellido">
+
+  <label>Email *</label>
+  <input type="email" id="email">
+
+  <label>Teléfono *</label>
+  <input id="telefono">
+
+  <div class="buttons">
+    <button type="button" class="secondary" onclick="backToStep2()">⬅ Volver</button>
+    <button type="button" class="primary" onclick="confirmar()">Confirmar turno</button>
+  </div>
+</section>
+
+</main>
 </div>
 
 <script>
-  const servicio = document.getElementById('servicio');
-  const lugar = document.getElementById('lugar');
-  const toStep2 = document.getElementById('toStep2');
+const servicio = document.getElementById('servicio');
+const lugar = document.getElementById('lugar');
+const toStep2 = document.getElementById('toStep2');
+const toStep3 = document.getElementById('toStep3');
 
-  servicio.addEventListener('change',()=>{
-    lugar.innerHTML = '<option value="">Seleccioná la ubicación</option>';
-    if(servicio.value==='CMM'){
-      lugar.innerHTML += '<option value="CMM">CMM - Centro Médico Moreno</option>';
-      lugar.disabled=false;
-    }
-    if(servicio.value==='LINCH'){
-      lugar.innerHTML += '<option value="LINCH">Linch 362</option>';
-      lugar.disabled=false;
-    }
-    checkStep1();
-  });
+const step1 = document.getElementById('step1');
+const step2 = document.getElementById('step2');
+const step3 = document.getElementById('step3');
 
-  lugar.addEventListener('change',checkStep1);
+const step1Label = document.getElementById('step1Label');
+const step2Label = document.getElementById('step2Label');
+const step3Label = document.getElementById('step3Label');
 
-  function checkStep1(){
-    toStep2.disabled = !(servicio.value && lugar.value);
+/* Servicio */
+servicio.addEventListener('change',()=>{
+  lugar.innerHTML='<option value=\"\">Seleccioná la ubicación</option>';
+  lugar.disabled=false;
+  if(servicio.value==='CMM'){
+    lugar.innerHTML+='<option>CMM - Centro Médico Moreno</option>';
   }
-
-  toStep2.onclick = ()=>{
-    document.getElementById('step1').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
-    document.getElementById('step1Label').classList.remove('active');
-    document.getElementById('step2Label').classList.add('active');
-  };
-
-  /* Calendario */
-  let date = new Date();
-  let selectedDay = null;
-  let selectedHour = null;
-  const calendarEl = document.getElementById('calendar');
-  const monthYear = document.getElementById('monthYear');
-  const hoursEl = document.getElementById('hours');
-
-  const availableDays = [3,5,7,12,14,18,23]; // ejemplo
-  const hours = ['09:00','10:00','11:00','15:00','16:00'];
-
-  function renderCalendar(){
-    calendarEl.innerHTML='';
-    monthYear.innerText = date.toLocaleString('es-AR',{month:'long',year:'numeric'});
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const daysInMonth = new Date(year,month+1,0).getDate();
-    for(let d=1; d<=daysInMonth; d++){
-      const div = document.createElement('div');
-      div.classList.add('day');
-      if(availableDays.includes(d)){
-        div.classList.add('available');
-        div.onclick=()=>selectDay(d,div);
-      } else {
-        div.classList.add('disabled');
-      }
-      div.innerText=d;
-      calendarEl.appendChild(div);
-    }
+  if(servicio.value==='LINCH'){
+    lugar.innerHTML+='<option>Linch 362</option>';
   }
+  toStep2.disabled = !(servicio.value && lugar.value);
+});
+lugar.addEventListener('change',()=>toStep2.disabled = !(servicio.value && lugar.value));
 
-  function selectDay(d,el){
-    document.querySelectorAll('.day').forEach(x=>x.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedDay=d;
-    renderHours();
-  }
+toStep2.onclick=()=>{
+  step1.classList.add('hidden');
+  step2.classList.remove('hidden');
+  step1Label.classList.remove('active');
+  step2Label.classList.add('active');
+};
 
-  function renderHours(){
-    hoursEl.innerHTML='';
-    selectedHour=null;
-    hours.forEach(h=>{
-      const div=document.createElement('div');
-      div.classList.add('hour');
-      div.innerText=h;
+/* Calendario */
+let date=new Date();
+const availableDays=[3,5,7,12,14,18,23];
+const hours=['09:00','10:00','11:00','15:00','16:00'];
+
+function renderCalendar(){
+  calendar.innerHTML='';
+  monthYear.innerText=date.toLocaleString('es-AR',{month:'long',year:'numeric'});
+  const y=date.getFullYear(),m=date.getMonth();
+  const days=new Date(y,m+1,0).getDate();
+  for(let d=1;d<=days;d++){
+    const div=document.createElement('div');
+    div.className='day '+(availableDays.includes(d)?'available':'disabled');
+    div.innerText=d;
+    if(availableDays.includes(d)){
       div.onclick=()=>{
-        document.querySelectorAll('.hour').forEach(x=>x.classList.remove('selected'));
+        document.querySelectorAll('.day').forEach(x=>x.classList.remove('selected'));
         div.classList.add('selected');
-        selectedHour=h;
-        document.getElementById('toStep3').disabled=false;
-      };
-      hoursEl.appendChild(div);
-    });
+        renderHours();
+      }
+    }
+    calendar.appendChild(div);
   }
+}
+function renderHours(){
+  hoursEl.innerHTML='';
+  toStep3.disabled=true;
+  hours.forEach(h=>{
+    const div=document.createElement('div');
+    div.className='hour';
+    div.innerText=h;
+    div.onclick=()=>{
+      document.querySelectorAll('.hour').forEach(x=>x.classList.remove('selected'));
+      div.classList.add('selected');
+      toStep3.disabled=false;
+    }
+    hoursEl.appendChild(div);
+  });
+}
 
-  function prevMonth(){date.setMonth(date.getMonth()-1);function backToStep1(){
-    // volver desde Fecha y Hora a Elegí tu servicio
-    document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step3').classList.add('hidden');
-    document.getElementById('step1').classList.remove('hidden');
+function prevMonth(){date.setMonth(date.getMonth()-1);renderCalendar();}
+function nextMonth(){date.setMonth(date.getMonth()+1);renderCalendar();}
 
-    document.getElementById('step1Label').classList.add('active');
-    document.getElementById('step2Label').classList.remove('active');
-    document.getElementById('step3Label').classList.remove('active');
-  }
+toStep3.onclick=()=>{
+  step2.classList.add('hidden');
+  step3.classList.remove('hidden');
+  step2Label.classList.remove('active');
+  step3Label.classList.add('active');
+};
 
-  function backToStep2(){
-    // volver desde Tu información a Fecha y Hora
-    document.getElementById('step3').classList.add('hidden');
-    document.getElementById('step1').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
+function backToStep1(){
+  step2.classList.add('hidden');
+  step1.classList.remove('hidden');
+  step2Label.classList.remove('active');
+  step1Label.classList.add('active');
+}
 
-    document.getElementById('step1Label').classList.remove('active');
-    document.getElementById('step2Label').classList.add('active');
-    document.getElementById('step3Label').classList.remove('active');
-  }
+function backToStep2(){
+  step3.classList.add('hidden');
+  step2.classList.remove('hidden');
+  step3Label.classList.remove('active');
+  step2Label.classList.add('active');
+}
 
-  renderCalendar();}
-  function nextMonth(){date.setMonth(date.getMonth()+1);renderCalendar();}
+function confirmar(){
+  alert('Turno confirmado correctamente');
+}
 
-  document.getElementById('toStep3').onclick=()=>{
-    document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step3').classList.remove('hidden');
-    document.getElementById('step2Label').classList.remove('active');
-    document.getElementById('step3Label').classList.add('active');
-  }
-
-  function confirmar(){
-    alert('Turno confirmado');
-  }
-
-  renderCalendar();
+renderCalendar();
 </script>
+
 </body>
 </html>
