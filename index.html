@@ -212,17 +212,25 @@
   }
 
   function prevMonth(){date.setMonth(date.getMonth()-1);function backToStep1(){
+    // volver desde Fecha y Hora a Elegí tu servicio
     document.getElementById('step2').classList.add('hidden');
+    document.getElementById('step3').classList.add('hidden');
     document.getElementById('step1').classList.remove('hidden');
-    document.getElementById('step2Label').classList.remove('active');
+
     document.getElementById('step1Label').classList.add('active');
+    document.getElementById('step2Label').classList.remove('active');
+    document.getElementById('step3Label').classList.remove('active');
   }
 
   function backToStep2(){
+    // volver desde Tu información a Fecha y Hora
     document.getElementById('step3').classList.add('hidden');
+    document.getElementById('step1').classList.add('hidden');
     document.getElementById('step2').classList.remove('hidden');
-    document.getElementById('step3Label').classList.remove('active');
+
+    document.getElementById('step1Label').classList.remove('active');
     document.getElementById('step2Label').classList.add('active');
+    document.getElementById('step3Label').classList.remove('active');
   }
 
   renderCalendar();}
