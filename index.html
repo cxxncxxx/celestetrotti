@@ -134,9 +134,9 @@ button:disabled{background:#999}
 <body>
 
 <header>
-  <img src="./pediatra.jpeg" class="avatar" alt="Pediatra">
+  <img src="pediatra.jpeg" class="avatar">
   <h2>Dra. Celeste Trotti</h2>
-  <p>Especialidad: Pediatría</p>
+  <p>Pediatría</p>
 </header>
 
 <div class="container">
@@ -148,27 +148,26 @@ button:disabled{background:#999}
   <div class="step" id="step3Label">3. Tu información</div>
 
   <div class="contacto">
-    <strong>Ponete en contacto</strong>
+    <strong>Contacto</strong>
     <p>📞 +54 2352 47-1150</p>
   </div>
 </aside>
 
 <main>
 
-<!-- STEP 1 -->
 <section id="step1">
   <h3>Elegí tu servicio</h3>
 
   <label>Servicio *</label>
   <select id="servicio">
-    <option value="">Seleccioná el servicio</option>
+    <option value="">Seleccioná</option>
     <option value="CMM">Pediatría CMM</option>
     <option value="LINCH">Pediatría Linch</option>
   </select>
 
   <label>Lugar de atención *</label>
   <select id="lugar" disabled>
-    <option value="">Seleccioná la ubicación</option>
+    <option value="">Seleccioná</option>
   </select>
 
   <div class="buttons">
@@ -176,26 +175,24 @@ button:disabled{background:#999}
   </div>
 </section>
 
-<!-- STEP 2 -->
 <section id="step2" class="hidden">
   <h3>Fecha y Hora</h3>
 
   <div class="calendar-header">
-    <button type="button" onclick="prevMonth()">◀</button>
+    <button onclick="prevMonth()">◀</button>
     <strong id="monthYear"></strong>
-    <button type="button" onclick="nextMonth()">▶</button>
+    <button onclick="nextMonth()">▶</button>
   </div>
 
-  <div class="calendar-grid" id="calendar"></div>
-  <div class="hours" id="hours"></div>
+  <div id="calendar" class="calendar-grid"></div>
+  <div id="hours" class="hours"></div>
 
   <div class="buttons">
-    <button type="button" class="secondary" onclick="backToStep1()">⬅ Volver</button>
-    <button type="button" class="primary" id="toStep3" disabled>Continuar</button>
+    <button class="secondary" onclick="backToStep1()">⬅ Volver</button>
+    <button class="primary" id="toStep3" disabled>Continuar</button>
   </div>
 </section>
 
-<!-- STEP 3 -->
 <section id="step3" class="hidden">
   <h3>Tu información</h3>
 
@@ -212,8 +209,8 @@ button:disabled{background:#999}
   <input>
 
   <div class="buttons">
-    <button type="button" class="secondary" onclick="backToStep2()">⬅ Volver</button>
-    <button type="button" class="primary" onclick="confirmar()">Confirmar turno</button>
+    <button class="secondary" onclick="backToStep2()">⬅ Volver</button>
+    <button class="primary" onclick="confirmar()">Confirmar turno</button>
   </div>
 </section>
 
@@ -221,6 +218,7 @@ button:disabled{background:#999}
 </div>
 
 <script>
+/* ELEMENTOS */
 const servicio = document.getElementById('servicio');
 const lugar = document.getElementById('lugar');
 const toStep2 = document.getElementById('toStep2');
@@ -234,22 +232,19 @@ const step1Label = document.getElementById('step1Label');
 const step2Label = document.getElementById('step2Label');
 const step3Label = document.getElementById('step3Label');
 
-let diaSeleccionado = null;
-let horarioSeleccionado = null;
+const calendar = document.getElementById('calendar');
+const hoursEl = document.getElementById('hours');
+const monthYear = document.getElementById('monthYear');
 
-/* Servicio */
-servicio.addEventListener('change',()=>{
-  lugar.innerHTML='<option value=\"\">Seleccioná la ubicación</option>';
+/* SERVICIOS */
+servicio.onchange=()=>{
+  lugar.innerHTML='<option value="">Seleccioná</option>';
   lugar.disabled=false;
-  if(servicio.value==='CMM'){
-    lugar.innerHTML+='<option>CMM - Centro Médico Moreno</option>';
-  }
-  if(servicio.value==='LINCH'){
-    lugar.innerHTML+='<option>Linch 362</option>';
-  }
-  toStep2.disabled = !(servicio.value && lugar.value);
-});
-lugar.addEventListener('change',()=>toStep2.disabled = !(servicio.value && lugar.value));
+  if(servicio.value==='CMM') lugar.innerHTML+='<option>CMM - Centro Médico Moreno</option>';
+  if(servicio.value==='LINCH') lugar.innerHTML+='<option>Linch 362</option>';
+  toStep2.disabled=true;
+};
+lugar.onchange=()=>toStep2.disabled=!lugar.value;
 
 toStep2.onclick=()=>{
   step1.classList.add('hidden');
@@ -258,29 +253,36 @@ toStep2.onclick=()=>{
   step2Label.classList.add('active');
 };
 
-/* Calendario */
+/* CALENDARIO */
 let date=new Date();
+let diaSeleccionado=null;
+let horarioSeleccionado=null;
+
 const availableDays=[3,5,7,12,14,18,23];
-const hours=['09:00','10:00','11:00','15:00','16:00'];
+const horarios=['09:00','10:00','11:00','15:00','16:00'];
 
 function renderCalendar(){
   calendar.innerHTML='';
-  monthYear.innerText=date.toLocaleString('es-AR',{month:'long',year:'numeric'});
-  const y=date.getFullYear(),m=date.getMonth();
-  const days=new Date(y,m+1,0).getDate();
+  hoursEl.innerHTML='';
+  monthYear.textContent=date.toLocaleString('es-AR',{month:'long',year:'numeric'});
 
-  for(let d=1;d<=days;d++){
+  const y=date.getFullYear(),m=date.getMonth();
+  const totalDays=new Date(y,m+1,0).getDate();
+
+  for(let d=1;d<=totalDays;d++){
     const div=document.createElement('div');
-    div.className='day '+(availableDays.includes(d)?'available':'disabled');
-    div.innerText=d;
+    div.textContent=d;
 
     if(availableDays.includes(d)){
+      div.className='day available';
       div.onclick=()=>{
         diaSeleccionado=d;
         document.querySelectorAll('.day').forEach(x=>x.classList.remove('selected'));
         div.classList.add('selected');
         renderHours();
-      }
+      };
+    }else{
+      div.className='day disabled';
     }
     calendar.appendChild(div);
   }
@@ -288,19 +290,18 @@ function renderCalendar(){
 
 function renderHours(){
   hoursEl.innerHTML='';
-  horarioSeleccionado=null;
   toStep3.disabled=true;
 
-  hours.forEach(h=>{
+  horarios.forEach(h=>{
     const div=document.createElement('div');
     div.className='hour';
-    div.innerText=h;
+    div.textContent=h;
     div.onclick=()=>{
       horarioSeleccionado=h;
       document.querySelectorAll('.hour').forEach(x=>x.classList.remove('selected'));
       div.classList.add('selected');
       toStep3.disabled=false;
-    }
+    };
     hoursEl.appendChild(div);
   });
 }
@@ -308,11 +309,8 @@ function renderHours(){
 function prevMonth(){date.setMonth(date.getMonth()-1);renderCalendar();}
 function nextMonth(){date.setMonth(date.getMonth()+1);renderCalendar();}
 
+/* NAVEGACIÓN */
 toStep3.onclick=()=>{
-  if(!diaSeleccionado || !horarioSeleccionado){
-    alert('Seleccioná un día y horario');
-    return;
-  }
   step2.classList.add('hidden');
   step3.classList.remove('hidden');
   step2Label.classList.remove('active');
@@ -322,17 +320,11 @@ toStep3.onclick=()=>{
 function backToStep1(){
   step2.classList.add('hidden');
   step1.classList.remove('hidden');
-  step2Label.classList.remove('active');
-  step1Label.classList.add('active');
 }
-
 function backToStep2(){
   step3.classList.add('hidden');
   step2.classList.remove('hidden');
-  step3Label.classList.remove('active');
-  step2Label.classList.add('active');
 }
-
 function confirmar(){
   alert('Turno confirmado correctamente');
 }
