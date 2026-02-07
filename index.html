@@ -57,6 +57,11 @@
     <div class="step active" id="step1Label">1. Elegí tu servicio</div>
     <div class="step" id="step2Label">2. Fecha y hora</div>
     <div class="step" id="step3Label">3. Tu información</div>
+
+    <div style="margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.4)">
+      <p style="margin:0;font-weight:bold">Ponete en contacto</p>
+      <p style="margin:5px 0">📞 +54 2352 47-1150</p>
+    </div>
   </aside>
 
   <main>
@@ -80,6 +85,7 @@
 
     <!-- Paso 2 -->
     <section id="step2" class="hidden">
+      <button onclick="backToStep1()" style="background:#ccc;color:#000">⬅ Volver</button>
       <h3>Fecha y Hora</h3>
       <div class="calendar">
         <div class="calendar-header">
@@ -95,6 +101,7 @@
 
     <!-- Paso 3 -->
     <section id="step3" class="hidden">
+      <button onclick="backToStep2()" style="background:#ccc;color:#000">⬅ Volver</button>
       <h3>Tu Información</h3>
       <label>Nombre *</label>
       <input type="text" id="nombre" required />
@@ -199,7 +206,21 @@
     });
   }
 
-  function prevMonth(){date.setMonth(date.getMonth()-1);renderCalendar();}
+  function prevMonth(){date.setMonth(date.getMonth()-1);function backToStep1(){
+    document.getElementById('step2').classList.add('hidden');
+    document.getElementById('step1').classList.remove('hidden');
+    document.getElementById('step2Label').classList.remove('active');
+    document.getElementById('step1Label').classList.add('active');
+  }
+
+  function backToStep2(){
+    document.getElementById('step3').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+    document.getElementById('step3Label').classList.remove('active');
+    document.getElementById('step2Label').classList.add('active');
+  }
+
+  renderCalendar();}
   function nextMonth(){date.setMonth(date.getMonth()+1);renderCalendar();}
 
   document.getElementById('toStep3').onclick=()=>{
