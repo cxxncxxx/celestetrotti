@@ -96,7 +96,10 @@
         <div class="calendar-grid" id="calendar"></div>
       </div>
       <div class="hours" id="hours"></div>
-      <button id="toStep3" disabled>Continuar</button>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button onclick="backToStep1()" style="background:#ccc;color:#000">⬅ Volver</button>
+        <button id="toStep3" disabled>Continuar</button>
+      </div>
     </section>
 
     <!-- Paso 3 -->
@@ -115,7 +118,10 @@
       <label>Teléfono *</label>
       <input type="tel" id="telefono" required />
 
-      <button onclick="confirmar()">Confirmar turno</button>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button onclick="backToStep2()" style="background:#ccc;color:#000">⬅ Volver</button>
+        <button onclick="confirmar()">Confirmar turno</_toggle>
+      </div>
     </section>
   </main>
 </div>
